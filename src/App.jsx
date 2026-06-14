@@ -1,167 +1,259 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, SkipBack, SkipForward } from 'lucide-react';
 import PasswordScreen from './components/PasswordScreen';
-import CinematicWelcome from './components/CinematicWelcome';
+import PremiumHero from './components/PremiumHero';
+import TextMessageSection from './components/TextMessageSection';
+import ScatteredStory from './components/ScatteredStory';
+import InteractiveVideoShowcase from './components/InteractiveVideoShowcase';
 import SurpriseBox from './components/SurpriseBox';
-import EnvelopeSlide from './components/EnvelopeSlide';
-import MagazineFront from './components/MagazineFront';
-import VideoSlider from './components/VideoSlider';
-import StoryTimeline from './components/StoryTimeline';
-import FinalEnding from './components/FinalEnding';
-import BirthdaySurpriseModal from './components/BirthdaySurpriseModal';
-import SpecialVideoTransition from './components/SpecialVideoTransition';
+import MagazineSpread from './components/MagazineSpread';
+import SecretMessage from './components/SecretMessage';
+import TheVault from './components/TheVault';
+import ScratchCardSection from './components/ScratchCardSection';
 import './index.css';
 import mediaData from './mediaList.json';
+import playlistData from './playlist.json';
 
 function App() {
   const [stage, setStage] = useState('password'); 
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
   const audioRef = useRef(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
-  
-  const [introMedia, setIntroMedia] = useState({ photos: [], video: null });
-  const [remainingPhotos, setRemainingPhotos] = useState([]);
-  const [allVideosList, setAllVideosList] = useState([]);
-
-  const playlist = [
-    '/songs/tera-yaar-hoon-main.webm'
-  ];
+  const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
 
   useEffect(() => {
-    // Filter out the transition video and the ONE hidden surprise video
+    // Shuffle the playlist on mount so songs play randomly
+    const shuffled = [...playlistData].sort(() => Math.random() - 0.5);
+    setShuffledPlaylist(shuffled);
+  }, []);
+  
+  const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [hiddenVideo, setHiddenVideo] = useState(null);
+  const [heroBg, setHeroBg] = useState(null);
+
+  useEffect(() => {
+    // Separate media
     const allVideos = mediaData.filter(m => {
       if (!m.isVideo && !m.video) return false;
       const src = m.src;
-      // Transition video (Green saree - Smile please!)
+      // Filter out transition video
       if (src.includes('VID_20260610_100120_947.mp4')) return false; 
-      
-      // Hidden surprise balloon video (Cake cutting)
-      if (src.includes('InShot_20250813_003150820.mp4')) return false;
-      
+      // Keep hidden video separate
+      if (src.includes('InShot_20250813_003150820.mp4')) {
+        setHiddenVideo(src);
+        return false;
+      }
       return true;
     });
+    
     const allPhotos = mediaData.filter(m => !m.isVideo && !m.video);
     
-    // Pick 3 photos ONLY for the Surprise Box
-    const introPhotos = allPhotos.slice(0, 3);
-    setIntroMedia({ photos: introPhotos, video: null });
-    
-    const remainingPics = allPhotos.slice(3);
-    setRemainingPhotos(remainingPics);
-    setAllVideosList(allVideos);
-  }, []);
-
-  const handleSongEnd = () => {
-    setCurrentSongIndex(0);
-    if (audioRef.current) {
-      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+    setVideos(allVideos);
+    setPhotos(allPhotos);
+    if(allPhotos.length > 0) {
+      setHeroBg(allPhotos[0].src); // Use first photo as hero background
     }
-  };
+  }, []);
 
   const toggleMusic = () => {
     if (audioRef.current) {
       if (isMusicPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+        audioRef.current.play().catch(e => console.log("Play error:", e));
       }
       setIsMusicPlaying(!isMusicPlaying);
     }
   };
 
-  useEffect(() => {
-    if (audioRef.current && stage !== 'password' && stage !== 'cinematic') {
-      audioRef.current.volume = 0.8;
-      if (isMusicPlaying) {
-        audioRef.current.play().catch(e => {
-          console.log("Auto-play blocked:", e);
-          setIsMusicPlaying(false);
-        });
-      }
-    }
-  }, [stage]);
-
-  useEffect(() => {
-    if (audioRef.current && stage !== 'password' && stage !== 'cinematic' && isMusicPlaying) {
-      audioRef.current.play().catch(e => {
-        console.log("Audio play failed:", e);
-        setIsMusicPlaying(false);
-      });
-    }
-  }, [currentSongIndex, stage]);
-
-  const startInitialMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.8;
-      audioRef.current.play().catch(e => {
-        console.log("Audio play failed:", e);
-        setIsMusicPlaying(false);
-      });
+  const handleNextSong = (e) => {
+    e.stopPropagation();
+    if (shuffledPlaylist.length > 0) {
+      setCurrentSongIndex((prev) => (prev + 1) % shuffledPlaylist.length);
       setIsMusicPlaying(true);
     }
   };
 
+  const handlePrevSong = (e) => {
+    e.stopPropagation();
+    if (shuffledPlaylist.length > 0) {
+      setCurrentSongIndex((prev) => (prev - 1 + shuffledPlaylist.length) % shuffledPlaylist.length);
+      setIsMusicPlaying(true);
+    }
+  };
+
+  const handleUnlock = () => {
+    setStage('welcomeVideo');
+  };
+
+  const finishWelcomeVideo = () => {
+    setStage('website');
+    setIsMusicPlaying(true);
+  };
+
+  useEffect(() => {
+    if (stage === 'website' && isMusicPlaying && audioRef.current) {
+      audioRef.current.play().catch(e => {
+        console.log("Autoplay blocked:", e);
+        setIsMusicPlaying(false);
+      });
+    }
+  }, [stage, isMusicPlaying, currentSongIndex]);
+
   return (
     <div className="app-container">
-      <audio 
-        ref={audioRef} 
-        src={playlist[currentSongIndex]} 
-        onEnded={handleSongEnd}
-        preload="auto"
-      />
+      {stage === 'website' && shuffledPlaylist.length > 0 && (
+        <audio 
+          ref={audioRef}
+          src={shuffledPlaylist[currentSongIndex]}
+          autoPlay
+          onEnded={() => {
+            setCurrentSongIndex((prev) => (prev + 1) % shuffledPlaylist.length);
+          }}
+          onError={() => {
+            // Skip to next song if current song fails to load
+            setCurrentSongIndex((prev) => (prev + 1) % shuffledPlaylist.length);
+          }}
+        />
+      )}
 
-      {stage !== 'password' && stage !== 'cinematic' && (
-        <div className="music-controls" style={{
-          position: 'fixed', bottom: '20px', right: '20px', zIndex: 9998, 
-          display: 'flex', gap: '15px', alignItems: 'center',
-          background: 'rgba(255, 255, 255, 0.3)', padding: '10px 15px', borderRadius: '40px', backdropFilter: 'blur(10px)',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
-        }}>
+      {stage === 'password' && (
+        <PasswordScreen onUnlock={handleUnlock} bgImage="/juhi_media/file_0000000091f47209bcb30ef304b5d292.png" />
+      )}
+
+      {stage === 'welcomeVideo' && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <video 
+            src="/juhi_media/InShot_20260612_003622182.mp4" 
+            autoPlay 
+            controls
+            style={{ width: '100%', maxHeight: '100vh', objectFit: 'contain' }}
+            onEnded={finishWelcomeVideo}
+          />
           <button 
-            onClick={toggleMusic}
-            style={{ border: 'none', borderRadius: '50%', width: '60px', height: '60px', background: 'var(--accent-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', transition: 'transform 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onClick={finishWelcomeVideo} 
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(0,0,0,0.5)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', zIndex: 10001 }}
           >
-            {isMusicPlaying ? <Volume2 size={28} color="white" /> : <VolumeX size={28} color="white" />}
+            Skip &gt;&gt;
           </button>
         </div>
       )}
 
-      {stage === 'password' && (
-        <PasswordScreen onUnlock={() => setStage('cinematic')} />
-      )}
+      {stage === 'website' && (
+        <>
+          {/* Persistent Music Controller */}
+          <div style={{
+            position: 'fixed', bottom: '30px', right: '30px', zIndex: 9998,
+            background: 'rgba(20, 20, 20, 0.8)', padding: '12px 24px', borderRadius: '30px',
+            backdropFilter: 'blur(10px)', border: '1px solid rgba(212, 175, 55, 0.4)',
+            display: 'flex', alignItems: 'center', gap: '20px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
+          }}>
+            <SkipBack 
+              size={22} 
+              color="#d4af37" 
+              style={{ cursor: 'pointer', transition: 'transform 0.2s' }} 
+              onClick={handlePrevSong}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            />
+            <div 
+              onClick={toggleMusic} 
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {isMusicPlaying ? <Volume2 size={26} color="#d4af37" /> : <VolumeX size={26} color="#d4af37" />}
+            </div>
+            <SkipForward 
+              size={22} 
+              color="#d4af37" 
+              style={{ cursor: 'pointer', transition: 'transform 0.2s' }} 
+              onClick={handleNextSong}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            />
+          </div>
 
-      {stage === 'cinematic' && (
-        <CinematicWelcome 
-          onFinish={() => setStage('box')} 
-          onStartMusic={startInitialMusic}
-        />
-      )}
-      
-      {stage === 'box' && (
-        <SurpriseBox 
-          introMedia={introMedia} 
-          onOpen={() => setStage('envelope')} 
-        />
-      )}
+          <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} />
+          
+          <TextMessageSection 
+            title="The Beginning"
+            message="Ek waqt tha jab hum dono ek dusre ke liye bilkul anjaan the. Na baat hoti thi, na koi khaas pehchaan. Phir dheere-dheere baatein shuru hui, nok-jhok hui, kabhi behas hui, kabhi hasi-mazaak. Kabhi tum mujhse naraz hui, kabhi main tumse. Lekin shayad wahi chhoti-chhoti nok-jhok hamari dosti ko aur gehra banati gayi."
+          />
 
-      {stage === 'envelope' && (
-        <EnvelopeSlide onFinish={() => setStage('special_video')} />
-      )}
+          <SurpriseBox 
+            videoSrc="/juhi_media/InShot_20260613_004715679.mp4" 
+            bgImage={photos.length > 0 ? photos[photos.length - 2]?.src : null}
+          />
 
-      {stage === 'special_video' && (
-        <SpecialVideoTransition onFinish={() => setStage('story')} />
-      )}
-      
-      {stage === 'story' && (
-        <div className="main-content show">
-          <MagazineFront mediaData={mediaData} />
-          <VideoSlider videos={allVideosList} />
-          <StoryTimeline media={remainingPhotos} />
-          <FinalEnding onRestart={() => setStage('password')} />
-          <BirthdaySurpriseModal photos={remainingPhotos} />
-        </div>
+          <ScatteredStory photos={photos} videos={videos} />
+
+          <ScratchCardSection 
+            title="Scratch Your Surprise!" 
+            subtext="Kuch yaadein chhipi hui hoti hain. Scratch karein aur dekhein kya surprise hai!" 
+            imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
+          />
+
+          <TextMessageSection 
+            title="The Journey"
+            message="Aaj sochti hoon to lagta hai ki anjaan se shuru hua safar itna khoobsurat hoga, kabhi socha hi nahi tha. Aaj hum do alag log nahi, balki ek dusre ki khushi, takleef aur yaadon ka hissa ban chuke hain. Hamari har ladai ke baad wali sulah aur har muskurahat ne is dosti ko aur bhi khaas bana diya. ❤️"
+          />
+
+          <SurpriseBox 
+            title="Another Sweet Memory"
+            message="Ek aur chhota sa surprise tumhare liye, kyunki tumhari har muskurahat mere liye bahut khaas hai. Tap to open!"
+            videoSrc="/juhi_media/VID_20251021_085311_041.mp4" 
+            bgImage={photos.length > 0 ? photos[photos.length - 5]?.src : null}
+          />
+
+          <InteractiveVideoShowcase videos={videos.slice(2)} />
+
+          <TextMessageSection 
+            title="A True Blessing"
+            message="Kehte hain ki Bhagwan har jagah khud nahi pahunch sakte, isliye woh apni taraf se kuch khaas log bhejte hain. Aur jab kabhi khoon ke rishte saath na de paaye ya samajh na paaye, tab Bhagwan ek saccha best friend de dete hain jo bina kisi matlab ke hamesha saath khada rehta hai. ❤️"
+          />
+
+          <MagazineSpread 
+            photos={photos} 
+            calendarVideoSrc="/juhi_media/VID_20260225_205339_824.mp4" 
+            featuredPhoto="/juhi_media/file_000000004d8c7209b311dd8d13ee4b9e.png"
+          />
+
+          <SurpriseBox 
+            title="A Golden Memory"
+            message="Kuch yaadein seedha dil mein utar jaati hain. Ek aur khoobsurat pal, sirf tumhare liye."
+            videoSrc="/juhi_media/VID_20260610_100058_965.mp4" 
+            bgImage={photos.length > 0 ? photos[15]?.src : null}
+            iconType="heart"
+          />
+
+          <TheVault 
+            allPhotos={photos.slice(5)} 
+            bgImage={photos.length > 0 ? photos[photos.length - 3]?.src : null}
+          />
+
+          <ScratchCardSection 
+            title="One More Surprise!" 
+            subtext="Ek aur khoobsurat pal, sirf tumhare liye." 
+            imageSrc="/juhi_media/WhatsApp Image 2026-06-15 at 5.07.01 AM.jpeg" 
+          />
+
+          <TextMessageSection 
+            title="Forever Besties"
+            message="Meri zindagi mein tum wahi tohfa ho. Khoon ka rishta na hote hue bhi tumne har khushi aur har mushkil mein apna saath diya. Shayad isi liye kehte hain ki kuch rishte janam se nahi, dil se bante hain. 🫶"
+          />
+
+          <SecretMessage 
+            hiddenVideoSrc={hiddenVideo} 
+            bgImage={photos.length > 0 ? photos[photos.length - 4]?.src : null}
+          />
+
+          <footer className="footer">
+            <div className="footer-text">Made with ❤️ for Juhi</div>
+          </footer>
+        </>
       )}
     </div>
   );

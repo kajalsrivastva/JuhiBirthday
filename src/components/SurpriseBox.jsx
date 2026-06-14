@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import FadeInSection from './FadeInSection';
+import { Gift, Heart, Star } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Gift, Play } from 'lucide-react';
 
-const SurpriseBox = ({ introMedia, onOpen }) => {
-  const [isOpening, setIsOpening] = useState(false);
-  const [showMedia, setShowMedia] = useState(false);
-  const [typedText, setTypedText] = useState('');
-  
-  const fullText = "Is box mein sirf tasveerein nahi… meri sabse khoobsurat yaadein chhupi hain.";
+const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) => {
+  const [opened, setOpened] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const handleOpen = () => {
-    if (isOpening) return;
-    setIsOpening(true);
-
-    const duration = 5000;
+    setOpened(true);
+    
+    // Confetti blast
+    const duration = 2000;
     const end = Date.now() + duration;
 
     const frame = () => {
@@ -22,14 +20,16 @@ const SurpriseBox = ({ introMedia, onOpen }) => {
         angle: 60,
         spread: 55,
         origin: { x: 0 },
-        colors: ['#ff3366', '#9d4edd', '#ffffff', '#ffd700']
+        colors: ['#d4af37', '#e8b4b8', '#ffffff'],
+        zIndex: 100000
       });
       confetti({
         particleCount: 5,
         angle: 120,
         spread: 55,
         origin: { x: 1 },
-        colors: ['#ff3366', '#9d4edd', '#ffffff', '#ffd700']
+        colors: ['#d4af37', '#e8b4b8', '#ffffff'],
+        zIndex: 100000
       });
 
       if (Date.now() < end) {
@@ -39,104 +39,68 @@ const SurpriseBox = ({ introMedia, onOpen }) => {
     frame();
 
     setTimeout(() => {
-      setShowMedia(true);
-    }, 1000); 
+      setShowVideo(true);
+    }, 1500); 
   };
 
-  useEffect(() => {
-    if (showMedia) {
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        setTypedText(fullText.slice(0, i));
-        i++;
-        if (i > fullText.length) {
-          clearInterval(typeInterval);
-          setTimeout(() => {
-            onOpen();
-          }, 4000);
-        }
-      }, 70);
-      return () => clearInterval(typeInterval);
-    }
-  }, [showMedia, onOpen]);
-
-  const allIntroMedia = introMedia ? [...introMedia.photos, introMedia.video].filter(Boolean) : [];
-
   return (
-    <div className={`surprise-container ${isOpening && typedText.length === fullText.length ? 'fade-out-late' : ''}`}>
-      {/* Subtle Faded Background for Surprise Box */}
-      {allIntroMedia[0] && (
-        <div 
-          style={{
-            position: 'absolute', inset: 0, 
-            backgroundImage: `url(${allIntroMedia[0].src})`,
-            backgroundSize: 'cover', backgroundPosition: 'center',
-            opacity: 0.1, zIndex: 0
-          }}
-        />
+    <section className="surprise-box-section" style={{
+      position: 'relative',
+      backgroundColor: '#0a0a0c',
+      minHeight: '80vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      padding: '100px 20px 10vh 20px',
+      overflow: 'hidden'
+    }}>
+      {bgImage && (
+        <>
+          <div style={{ position: 'absolute', inset: '-20px', backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px)', opacity: 0.5, zIndex: 0 }}></div>
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${bgImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', zIndex: 1 }}></div>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,12,0.6)', zIndex: 2 }}></div>
+        </>
       )}
       
-      <div className="surprise-content" style={{ position: 'relative', width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-        
-        <h1 className="surprise-text" style={{ minHeight: '120px', zIndex: 10, padding: '0 20px', fontSize: '2.5rem' }}>
-          {!isOpening ? "Click to Open the Magic Box 🎁" : typedText}
-        </h1>
-        
-        <div 
-          className={`gift-box-wrapper ${isOpening ? 'opening' : 'bouncing'}`}
-          onClick={handleOpen}
-          style={{ zIndex: 5, marginTop: '20px' }}
-        >
-          <div className="gift-box" style={{ filter: isOpening ? 'drop-shadow(0 0 50px rgba(255,215,0,0.8))' : 'none', transition: 'all 0.5s' }}>
-            <div className="gift-lid"></div>
-            <div className="gift-body">
-              <Gift size={60} color="white" />
-            </div>
+      <div style={{ position: 'relative', zIndex: 3, width: '100%' }}>
+        <FadeInSection>
+          <div className="section-header" style={{ marginBottom: '40px' }}>
+            <h2 className="section-title" style={{ color: '#fff', textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>{title || "A Special Gift"}</h2>
+            <div className="text-divider" style={{ boxShadow: '0 0 10px rgba(0,0,0,0.5)' }}></div>
+            <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6', color: '#fff', textShadow: '1px 1px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' }}>
+              {message || "Ek chhota sa gift, us dost ke liye jo khud kisi gift se kam nahi. Dosti ka ye safar aise hi khubsoorat bana rahe. Tap the box to open your surprise!"}
+            </p>
+          </div>
+
+        <div className="box-container" onClick={!opened ? handleOpen : undefined}>
+          <div className={`gift-box ${opened ? 'gift-opened' : 'gift-idle'}`}>
+            {iconType === 'heart' ? (
+              <Heart size={100} fill="var(--accent-gold)" color="var(--accent-gold)" strokeWidth={1.5} />
+            ) : iconType === 'star' ? (
+              <Star size={100} fill="var(--accent-gold)" color="var(--accent-gold)" strokeWidth={1.5} />
+            ) : (
+              <Gift size={100} color="var(--accent-gold)" strokeWidth={1.5} />
+            )}
+            <div className="gift-glow"></div>
           </div>
         </div>
-
-        {showMedia && allIntroMedia.map((media, idx) => {
-          const angles = [-30, -10, 10, 30]; 
-          const xTransform = `calc(${angles[idx]}vw)`;
-          const yTransform = `-25vh`; // Fixed: don't fly off the top of the screen
-          const rotate = `${(idx % 2 === 0 ? -1 : 1) * (10 + idx * 5)}deg`;
-
-          return (
-            <div 
-              key={idx}
-              className="floating-intro-media"
-              style={{
-                position: 'absolute',
-                bottom: '30%',
-                left: '50%',
-                width: '150px',
-                height: '180px',
-                backgroundColor: 'white',
-                padding: '8px 8px 25px 8px',
-                borderRadius: '5px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                animation: `flyOut 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`,
-                animationDelay: `${idx * 0.3}s`,
-                '--x-dest': xTransform,
-                '--y-dest': yTransform,
-                '--rot-dest': rotate,
-                opacity: 0,
-                transform: 'translate(-50%, 0) scale(0.1)',
-                zIndex: 1
-              }}
-            >
-              {media.isVideo || media.video ? (
-                <div style={{ width: '100%', height: '100%', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Play color="white" />
-                </div>
-              ) : (
-                <img src={media.src} alt="memory" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              )}
-            </div>
-          );
-        })}
+        </FadeInSection>
       </div>
-    </div>
+
+      {showVideo && videoSrc && (
+        <div className="modal-overlay" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 100000 }}>
+          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }}>×</button>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <video 
+              src={videoSrc} 
+              controls 
+              autoPlay 
+              style={{ width: '100%', maxHeight: '85vh', display: 'block' }} 
+            />
+          </div>
+        </div>
+      )}
+    </section>
   );
 };
 
