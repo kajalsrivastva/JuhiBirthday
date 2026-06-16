@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { Gift } from 'lucide-react';
+import AudioButton from './AudioButton';
 
 const segments = [
   { label: 'Funny Memory', color: '#ff6b6b', msg: "Yaad hai wo din jab hum bina baat ke itna hase the ki pet dard ho gaya tha? Good times! 😂", btnText: "Play Memory Game 🧩", target: ".memory-puzzle-section" },
@@ -224,9 +225,12 @@ const SpinTheWheel = ({ onGoToMasti }) => {
               {result.label}
             </div>
             <h2 style={{ color: 'var(--accent-gold)', marginBottom: '20px', fontSize: '1.8rem' }}>Congratulations! 🎉</h2>
-            <p style={{ color: '#fff', fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '30px' }}>
+            <p style={{ color: '#fff', fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '15px' }}>
               {result.msg}
             </p>
+            <div style={{ marginBottom: '30px' }}>
+              <AudioButton text={`Congratulations! ${result.msg}`} size={20} />
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
               {result.btnText && (
                 <button 

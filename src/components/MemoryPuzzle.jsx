@@ -195,7 +195,7 @@ const MemoryPuzzle = ({ photos, videos }) => {
                   boxShadow: '0 5px 20px rgba(212, 175, 55, 0.4)'
                 }}
               >
-                Watch Surprise Video
+                Watch Surprise Random Video
               </button>
               
               <button 

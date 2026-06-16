@@ -63,7 +63,7 @@ const Navbar = ({ onGoToMasti, onLogout }) => {
             textShadow: '0 2px 4px rgba(0,0,0,0.5)'
           }}
         >
-          Juhi<span style={{ color: 'var(--accent-rose)' }}>.</span>
+          Juhi Birthday Surprise 2026<span style={{ color: 'var(--accent-rose)' }}></span>
         </div>
 
         {/* Right side controls */}

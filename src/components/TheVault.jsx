@@ -114,12 +114,12 @@ const TheVault = ({ allPhotos, bgImage }) => {
             </p>
           </FadeInSection>
         ) : (
-          <div className="vault-overlay" style={{ background: 'rgba(26,11,22,0.95)', backdropFilter: 'blur(15px)', backgroundImage: 'url(/juhi_media/birthday_theme_bg.png)', backgroundBlendMode: 'overlay', backgroundSize: 'cover', overflow: 'hidden' }}>
-            
-            {/* The close button as a sleek pill at the top left */}
-            <button className="vault-close" onClick={() => setOpened(false)} style={{ position: 'absolute', top: '90px', left: '20px', background: 'rgba(255, 105, 180, 0.2)', color: '#fff', border: '1px solid var(--accent-rose)', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.5)', zIndex: 10001, display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-rose)'; e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 105, 180, 0.2)'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <>
+            <button className="vault-close" onClick={() => setOpened(false)} style={{ position: 'fixed', top: '90px', left: '20px', background: 'rgba(255, 105, 180, 0.2)', color: '#fff', border: '1px solid var(--accent-rose)', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.5)', zIndex: 999999, display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-rose)'; e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 105, 180, 0.2)'; e.currentTarget.style.transform = 'scale(1)'; }}>
               <span style={{ fontSize: '1.2rem' }}>✕</span> Close
             </button>
+            <div className="vault-overlay" style={{ background: 'rgba(26,11,22,0.95)', backdropFilter: 'blur(15px)', backgroundImage: 'url(/juhi_media/birthday_theme_bg.png)', backgroundBlendMode: 'overlay', backgroundSize: 'cover', overflow: 'hidden' }}>
+
 
             {/* Scrollable Container */}
             <div style={{ overflowY: 'auto', height: '100%', width: '100%', paddingBottom: '120px' }}>
@@ -189,6 +189,7 @@ const TheVault = ({ allPhotos, bgImage }) => {
               </div>
             </div>
           </div>
+          </>
       )}
 
       {/* Lightbox */}
