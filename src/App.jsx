@@ -16,6 +16,7 @@ import MemoryPuzzle from './components/MemoryPuzzle';
 import ScratchCardSection from './components/ScratchCardSection';
 import ParticleBackground from './components/ParticleBackground';
 import ScrollToTop from './components/ScrollToTop';
+import Navbar from './components/Navbar';
 import './index.css';
 import mediaData from './mediaList.json';
 import playlistData from './playlist.json';
@@ -132,7 +133,7 @@ function App() {
       {stage === 'welcomeVideo' && (
         <div style={{ 
           position: 'fixed', inset: 0, 
-          backgroundImage: 'linear-gradient(to bottom, rgba(26, 11, 22, 0.8), rgba(26, 11, 22, 0.95)), url(/juhi_media/birthday_theme_bg.png)',
+          backgroundImage: 'linear-gradient(to bottom, rgba(26, 11, 22, 0.4), rgba(26, 11, 22, 0.7)), url(/juhi_media/birthday_theme_bg.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' 
@@ -141,7 +142,7 @@ function App() {
             src="/juhi_media/InShot_20260612_003622182.mp4" 
             autoPlay 
             controls
-            style={{ width: '100%', maxHeight: '100vh', objectFit: 'contain' }}
+            style={{ width: '100%', maxHeight: '100vh', objectFit: 'contain', background: 'transparent' }}
             onEnded={finishWelcomeVideo}
           />
           <button 
@@ -196,22 +197,42 @@ function App() {
             />
           </div>
       )}
-
       {stage === 'website' && (
         <>
-          <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} />
-          
-          <TextMessageSection 
-            title="The Beginning"
-            message="Ek waqt tha jab hum dono ek dusre ke liye bilkul anjaan the. Na baat hoti thi, na koi khaas pehchaan. Phir dheere-dheere baatein shuru hui, nok-jhok hui, kabhi behas hui, kabhi hasi-mazaak. Kabhi tum mujhse naraz hui, kabhi main tumse. Lekin shayad wahi chhoti-chhoti nok-jhok hamari dosti ko aur gehra banati gayi."
+          <Navbar 
+            onGoToMasti={() => {
+              setStage('masti');
+              window.scrollTo(0, 0);
+            }} 
+            onLogout={() => { setStage('password'); setIsMusicPlaying(false); }}
           />
+
+          <div id="section-home">
+            <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} />
+          </div>
+          
+          <div id="section-beginning">
+            <TextMessageSection 
+              title="The Beginning"
+              message="Ek waqt tha jab hum dono ek dusre ke liye bilkul anjaan the. Na baat hoti thi, na koi khaas pehchaan. Phir dheere-dheere baatein shuru hui, nok-jhok hui, kabhi behas hui, kabhi hasi-mazaak. Kabhi tum mujhse naraz hui, kabhi main tumse. Lekin shayad wahi chhoti-chhoti nok-jhok hamari dosti ko aur gehra banati gayi."
+            />
+          </div>
 
           <SurpriseBox 
             videoSrc="/juhi_media/InShot_20260613_004715679.mp4" 
             bgImage={photos.length > 0 ? photos[photos.length - 2]?.src : null}
           />
 
-          <ScatteredStory photos={photos} videos={videos} />
+          <div id="section-journey">
+            <ScatteredStory 
+              photos={photos} 
+              videos={videos} 
+              onGoToMasti={() => {
+                setStage('masti');
+                window.scrollTo(0, 0);
+              }}
+            />
+          </div>
 
           <ScratchCardSection 
             title="Scratch Your Surprise!" 
@@ -219,10 +240,12 @@ function App() {
             imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
           />
 
-          <MemoryPuzzle 
-            photos={photos} 
-            videos={videos}
-          />
+          <div id="section-puzzle">
+            <MemoryPuzzle 
+              photos={photos} 
+              videos={videos}
+            />
+          </div>
 
           <TextMessageSection 
             title="The Journey"
@@ -242,11 +265,13 @@ function App() {
             message="Kehte hain ki Bhagwan har jagah khud nahi pahunch sakte, isliye woh apni taraf se kuch khaas log bhejte hain. Aur jab kabhi khoon ke rishte saath na de paaye ya samajh na paaye, tab Bhagwan ek saccha best friend de dete hain jo bina kisi matlab ke hamesha saath khada rehta hai. ❤️"
           />
 
-          <MagazineSpread 
-            photos={photos} 
-            calendarVideoSrc="/juhi_media/VID_20260225_205339_824.mp4" 
-            featuredPhoto="/juhi_media/file_000000004d8c7209b311dd8d13ee4b9e.png"
-          />
+          <div id="section-magazine">
+            <MagazineSpread 
+              photos={photos} 
+              calendarVideoSrc="/juhi_media/VID_20260225_205339_824.mp4" 
+              featuredPhoto="/juhi_media/file_000000004d8c7209b311dd8d13ee4b9e.png"
+            />
+          </div>
 
           <SurpriseBox 
             title="A Golden Memory"
@@ -256,10 +281,12 @@ function App() {
             iconType="heart"
           />
 
-          <TheVault 
-            allPhotos={photos.slice(5)} 
-            bgImage={photos.length > 0 ? photos[photos.length - 3]?.src : null}
-          />
+          <div id="section-vault">
+            <TheVault 
+              allPhotos={photos.slice(5)} 
+              bgImage={photos.length > 0 ? photos[photos.length - 3]?.src : null}
+            />
+          </div>
 
           <ScratchCardSection 
             title="One More Surprise!" 

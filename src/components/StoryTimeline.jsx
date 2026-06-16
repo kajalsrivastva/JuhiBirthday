@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, X } from 'lucide-react';
+import AudioButton from './AudioButton';
 
 const chapters = [
   { id: 'ch1', title: 'First Meeting 🌸', pCount: 10, vCount: 2 },
@@ -90,7 +91,10 @@ const StoryTimeline = ({ media }) => {
     <div className="story-timeline-container">
       {chapterData.map((chapter, chapterIndex) => (
         <div key={chapter.id} className="chapter-section">
-          <h2 className="chapter-title">{chapter.title}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+            <h2 className="chapter-title" style={{ margin: 0 }}>{chapter.title}</h2>
+            <AudioButton text={chapter.title} size={24} />
+          </div>
           
           <div className="masonry-gallery">
             {chapter.items.map((item, idx) => {
@@ -126,9 +130,10 @@ const StoryTimeline = ({ media }) => {
                   <img src={item.src} alt={item.title || 'Memory'} className="scrapbook-media" loading="lazy" />
                   
                   {idx % 5 === 0 && (
-                    <div className="scrapbook-quote">
+                    <div className="scrapbook-quote" onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <div className="paper-clip"></div>
                       <p>"{quotes[(chapterIndex * 5 + idx) % quotes.length]}"</p>
+                      <AudioButton text={quotes[(chapterIndex * 5 + idx) % quotes.length]} size={16} />
                     </div>
                   )}
                 </div>

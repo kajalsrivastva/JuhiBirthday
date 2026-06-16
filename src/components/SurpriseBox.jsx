@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
 import { Gift, Heart, Star } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import AudioButton from './AudioButton';
 
 const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) => {
   const [opened, setOpened] = useState(false);
@@ -70,6 +71,9 @@ const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) =
             <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6', color: '#fff', textShadow: '1px 1px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' }}>
               {message || "Ek chhota sa gift, us dost ke liye jo khud kisi gift se kam nahi. Dosti ka ye safar aise hi khubsoorat bana rahe. Tap the box to open your surprise!"}
             </p>
+            <div style={{ textAlign: 'center', marginTop: '15px' }}>
+              <AudioButton text={`${title || "A Special Gift"}. ${message || "Ek chhota sa gift, us dost ke liye jo khud kisi gift se kam nahi. Dosti ka ye safar aise hi khubsoorat bana rahe. Tap the box to open your surprise!"}`} size={20} />
+            </div>
           </div>
 
         <div className="box-container" onClick={!opened ? handleOpen : undefined}>
