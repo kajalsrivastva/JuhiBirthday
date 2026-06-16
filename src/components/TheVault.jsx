@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import FadeInSection from './FadeInSection';
+import Tilt from 'react-parallax-tilt';
 
 const TheVault = ({ allPhotos, bgImage }) => {
   const [opened, setOpened] = useState(false);
@@ -20,16 +21,21 @@ const TheVault = ({ allPhotos, bgImage }) => {
 
     const handleMouseEnter = () => { isHovered = true; };
     const handleMouseLeave = () => { isHovered = false; };
+    const handleTouchStart = () => { isHovered = true; };
+    const handleTouchEnd = () => { isHovered = false; };
 
     const container = scrollRef.current;
     if (container) {
       container.addEventListener('mouseenter', handleMouseEnter);
       container.addEventListener('mouseleave', handleMouseLeave);
+      container.addEventListener('touchstart', handleTouchStart, { passive: true });
+      container.addEventListener('touchend', handleTouchEnd);
+      container.addEventListener('touchcancel', handleTouchEnd);
     }
 
     const autoScroll = () => {
       if (scrollRef.current && opened && !selectedMedia && !isHovered) {
-        scrollRef.current.scrollLeft += 1.5; // adjust speed here (thoda fast)
+        scrollRef.current.scrollLeft += 2.5; // adjust speed here (thoda fast)
         // Reset to left if reached end
         if (scrollRef.current.scrollLeft + scrollRef.current.clientWidth >= scrollRef.current.scrollWidth - 1) {
           scrollRef.current.scrollLeft = 0;
@@ -47,6 +53,9 @@ const TheVault = ({ allPhotos, bgImage }) => {
       if (container) {
         container.removeEventListener('mouseenter', handleMouseEnter);
         container.removeEventListener('mouseleave', handleMouseLeave);
+        container.removeEventListener('touchstart', handleTouchStart);
+        container.removeEventListener('touchend', handleTouchEnd);
+        container.removeEventListener('touchcancel', handleTouchEnd);
       }
     };
   }, [opened, selectedMedia]);
@@ -105,10 +114,11 @@ const TheVault = ({ allPhotos, bgImage }) => {
             </p>
           </FadeInSection>
         ) : (
-          <div className="vault-overlay">
-            <div className="vault-header">
-              <h2>💕BFF: Kajal & Juhi</h2>
-            <button className="vault-close" onClick={() => setOpened(false)}>Close</button>
+          <div className="vault-overlay" style={{ background: 'rgba(26,11,22,0.95)', backdropFilter: 'blur(15px)', backgroundImage: 'url(/juhi_media/birthday_theme_bg.png)', backgroundBlendMode: 'overlay', backgroundSize: 'cover' }}>
+            <div className="vault-header" style={{ borderBottom: '2px dashed var(--accent-gold)', paddingBottom: '20px', marginBottom: '30px', textAlign: 'center', width: '100%' }}>
+              <h2 style={{ fontSize: '3.5rem', color: 'var(--accent-gold)', textShadow: '0 0 20px rgba(255,105,180,0.8)' }}>💕 BFF Scrapbook 💕</h2>
+              <p style={{ color: '#fff', fontSize: '1.2rem', marginTop: '10px' }}>Our craziest, happiest, and most beautiful memories!</p>
+            <button className="vault-close" onClick={() => setOpened(false)} style={{ background: 'var(--accent-gold)', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '30px', fontWeight: 'bold', marginTop: '20px', cursor: 'pointer', boxShadow: '0 5px 15px rgba(255,105,180,0.4)' }}>Close Scrapbook</button>
           </div>
           
           <div className="magazine-grid" ref={scrollRef}>
@@ -127,23 +137,45 @@ const TheVault = ({ allPhotos, bgImage }) => {
                     </div>
                   )}
                   
-                  <div 
+                  <Tilt
+                    tiltMaxAngleX={15}
+                    tiltMaxAngleY={15}
+                    scale={1.05}
+                    transitionSpeed={1000}
                     className={`magazine-photo-block ${index % 4 === 0 ? 'large-photo' : 'standard-photo'} ${animClass}`}
-                    onClick={() => setSelectedMedia({ type: 'photo', src: photo.src })}
-                    style={{ animationDelay: `${(index % 10) * 0.1}s` }}
+                    style={{ animationDelay: `${(index % 10) * 0.1}s`, padding: '10px', background: 'transparent', border: 'none' }}
                   >
-                    <img src={photo.src} alt={`Archive ${index}`} loading="lazy" style={{ opacity: 1 }} />
+                    <div 
+                      onClick={() => setSelectedMedia({ type: 'photo', src: photo.src })}
+                      style={{ 
+                        width: '100%', height: '100%', cursor: 'pointer',
+                        backgroundColor: '#fff',
+                        padding: '15px 15px 80px 15px',
+                        borderRadius: '4px',
+                        boxShadow: '0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(255,105,180,0.3)',
+                        transform: `rotate(${index % 2 === 0 ? (index % 3 === 0 ? '4deg' : '-2deg') : '-4deg'})`,
+                        position: 'relative'
+                      }}
+                    >
+                      <img src={photo.src} alt={`Archive ${index}`} loading="lazy" style={{ opacity: 1, width: '100%', height: '100%', objectFit: 'contain', backgroundColor: '#111', borderRadius: '2px' }} />
 
-                    
-                    <div className="magazine-caption" style={{ 
-                      fontSize: '1.2rem', 
-                      fontFamily: 'var(--font-heading)',
-                      padding: '20px',
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%)'
-                    }}>
-                      {hoverMessages[index % hoverMessages.length]}
+                      <div className="magazine-caption" style={{ 
+                        fontSize: '1.4rem', 
+                        fontFamily: 'var(--font-heading)',
+                        color: 'var(--accent-rose)',
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: '0',
+                        width: '100%',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        background: 'none',
+                        padding: '0'
+                      }}>
+                        {hoverMessages[index % hoverMessages.length]}
+                      </div>
                     </div>
-                  </div>
+                  </Tilt>
                 </React.Fragment>
               );
             })}

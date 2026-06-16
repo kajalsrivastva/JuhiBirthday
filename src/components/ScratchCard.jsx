@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import confetti from 'canvas-confetti';
 
 const ScratchCard = ({ imageSrc }) => {
   const canvasRef = useRef(null);
@@ -76,6 +77,12 @@ const ScratchCard = ({ imageSrc }) => {
         }
         if (transparent / (canvas.width * canvas.height) > 0.4) {
           setIsScratched(true);
+          confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#ff1493', '#d4af37', '#ffffff', '#ff69b4']
+          });
         }
       }
     };
@@ -101,9 +108,20 @@ const ScratchCard = ({ imageSrc }) => {
   return (
     <div ref={containerRef} style={{ 
       position: 'relative', width: '100%', maxWidth: '300px', aspectRatio: '3/4', margin: '20px auto', 
-      borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5), 0 0 0 2px rgba(212,175,55,0.3)', backgroundColor: '#000'
+      borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,105,180,0.3)', backgroundColor: '#000'
     }}>
-      <img src={imageSrc} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Surprise" />
+      <img src={imageSrc} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Surprise" />
+      
+      {isScratched && (
+        <div style={{
+          position: 'absolute', bottom: '10%', left: 0, right: 0, textAlign: 'center',
+          animation: 'floatUp 1s ease forwards', zIndex: 5, padding: '10px'
+        }}>
+          <h3 style={{ color: 'var(--accent-gold)', textShadow: '2px 2px 8px rgba(0,0,0,0.9), 0 0 10px rgba(255,105,180,0.8)', fontSize: '1.8rem', margin: '0 0 5px 0', fontFamily: 'var(--font-heading)' }}>You're Precious! 💕</h3>
+          <p style={{ color: '#fff', textShadow: '1px 1px 5px rgba(0,0,0,0.9)', margin: 0, fontSize: '1.1rem', fontWeight: 'bold' }}>Stay happy always, Bestie!</p>
+        </div>
+      )}
+
       <canvas 
         ref={canvasRef}
         style={{ 
