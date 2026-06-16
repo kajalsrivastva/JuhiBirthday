@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
 import { Heart, Sparkles, Play } from 'lucide-react';
+import AudioButton from './AudioButton';
 
 const MagazineSpread = ({ photos, calendarVideoSrc, featuredPhoto }) => {
   const [showVideo, setShowVideo] = useState(false);
@@ -98,9 +99,12 @@ const MagazineSpread = ({ photos, calendarVideoSrc, featuredPhoto }) => {
             </div>
 
             <div className="spread-text-content">
-              <p style={{ fontWeight: '400', fontSize: '1.25rem', marginBottom: '15px' }}>
-                Happy Birthday, mere sabse pyare dost! 🎉❤️
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <p style={{ fontWeight: '400', fontSize: '1.25rem', margin: 0 }}>
+                  Happy Birthday, mere sabse pyare dost! 🎉❤️
+                </p>
+                <AudioButton text="Happy Birthday, mere sabse pyare dost! Zindagi mein bahut log milte hain, lekin tum jaise sachche dost bahut kam hote hain. Har khushi aur mushkil mein saath dene ke liye shukriya. Dua karta hoon ki tumhari har khwahish poori ho, tum hamesha khush raho aur zindagi tumhe dher saari kamyabi aur pyaar de. Aaj ka din tumhare liye utna hi special ho jitne tum meri zindagi mein ho. Janamdin ki bahut bahut badhai!" size={20} />
+              </div>
               <p>
                 Zindagi mein bahut log milte hain, lekin tum jaise sachche dost bahut kam hote hain. Har khushi aur mushkil mein saath dene ke liye shukriya. Dua karta hoon ki tumhari har khwahish poori ho, tum hamesha khush raho aur zindagi tumhe dher saari kamyabi aur pyaar de.
               </p>
@@ -148,9 +152,14 @@ const MagazineSpread = ({ photos, calendarVideoSrc, featuredPhoto }) => {
                     fontStyle: 'italic',
                     color: '#222',
                     textAlign: 'center',
-                    fontWeight: '500'
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '5px'
                   }}>
                     "{hindiQuotes[idx % hindiQuotes.length]}"
+                    <AudioButton text={hindiQuotes[idx % hindiQuotes.length]} size={14} />
                   </div>
                 </div>
               ))}

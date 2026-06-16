@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
 import confetti from 'canvas-confetti';
+import AudioButton from './AudioButton';
 
 const SecretMessage = ({ hiddenVideoSrc, bgImage }) => {
   const [opened, setOpened] = useState(false);
@@ -69,6 +70,9 @@ const SecretMessage = ({ hiddenVideoSrc, bgImage }) => {
             <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6', color: '#fff', textShadow: '1px 1px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' }}>
               Har kahani ka ek sweet end hota hai, par hamari dosti ki kahani ka koi end nahi. You are simply irreplaceable. Tap to break the seal and unveil the final memory!
             </p>
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+              <AudioButton text="A Final Surprise. Har kahani ka ek sweet end hota hai, par hamari dosti ki kahani ka koi end nahi. You are simply irreplaceable. Tap to break the seal and unveil the final memory!" size={20} />
+            </div>
           </div>
 
         {!opened ? (

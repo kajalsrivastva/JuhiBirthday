@@ -1,6 +1,7 @@
 import React from 'react';
 import FadeInSection from './FadeInSection';
 import ScratchCard from './ScratchCard';
+import AudioButton from './AudioButton';
 
 const ScratchCardSection = ({ title, subtext, imageSrc }) => {
   return (
@@ -54,9 +55,12 @@ const ScratchCardSection = ({ title, subtext, imageSrc }) => {
               🎁 {title} 🎁
             </h2>
             <div className="text-divider" style={{ margin: '0 auto 20px auto', background: 'var(--accent-rose)' }}></div>
-            <p className="elegant-subtext" style={{ color: '#fff', textAlign: 'center', marginBottom: '40px', fontSize: '1.2rem', lineHeight: '1.6' }}>
+            <p className="elegant-subtext" style={{ color: '#fff', textAlign: 'center', marginBottom: '15px', fontSize: '1.2rem', lineHeight: '1.6' }}>
               {subtext}
             </p>
+            <div style={{ marginBottom: '30px' }}>
+              <AudioButton text={`${title}. ${subtext}`} size={20} />
+            </div>
             
             <div style={{
               padding: '10px',

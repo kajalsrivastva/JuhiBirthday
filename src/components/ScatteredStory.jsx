@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
 import { Play } from 'lucide-react';
 import Tilt from 'react-parallax-tilt';
+import SpinTheWheel from './SpinTheWheel';
+import AudioButton from './AudioButton';
 
-const ScatteredStory = ({ photos, videos }) => {
+const ScatteredStory = ({ photos, videos, onGoToMasti }) => {
   const [playingVideo, setPlayingVideo] = useState(null);
 
   if (!photos || photos.length < 3) return null;
@@ -42,7 +44,10 @@ const ScatteredStory = ({ photos, videos }) => {
                         <img src={photo.src} alt={`Story ${idx}`} className="editorial-image" />
                       </div>
                       <div className="editorial-text-container">
-                        <h3 className="editorial-title" style={{ position: 'relative', zIndex: 1 }}>{storyTexts[idx]?.title || "A Moment"}</h3>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: isEven ? 'flex-start' : 'flex-end', gap: '15px', position: 'relative', zIndex: 1 }}>
+                          <h3 className="editorial-title" style={{ margin: 0 }}>{storyTexts[idx]?.title || "A Moment"}</h3>
+                          <AudioButton text={`${storyTexts[idx]?.title || "A Moment"}. ${storyTexts[idx]?.text || "A beautiful memory captured forever."}`} size={20} />
+                        </div>
                         <div className="text-divider" style={{ margin: isEven ? '20px 0' : '20px 0 20px auto', position: 'relative', zIndex: 1 }}></div>
                         <p className="editorial-body" style={{ position: 'relative', zIndex: 1 }}>{storyTexts[idx]?.text || "A beautiful memory captured forever."}</p>
                         
@@ -63,26 +68,40 @@ const ScatteredStory = ({ photos, videos }) => {
 
             {/* Scatter a Video after every 2 photos if available */}
             {(idx === 1 || idx === 3) && topVideos[idx === 1 ? 0 : 1] && (
-              <div className="editorial-block" style={{ marginBottom: '120px' }}>
-                <FadeInSection>
-                  <div 
-                    className="video-poster" 
-                    style={{ position: 'relative', width: '100%', aspectRatio: '21/9', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.6)' }}
-                    onClick={() => setPlayingVideo(topVideos[idx === 1 ? 0 : 1].src)}
-                  >
-                    <video 
-                      src={topVideos[idx === 1 ? 0 : 1].src} 
-                      muted loop autoPlay playsInline
-                      className="poster-bg-video"
-                    />
-                    <div className="poster-overlay">
-                      <div className="giant-play-btn">
-                        <Play size={40} color="var(--accent-gold)" fill="var(--accent-gold)" />
+              <div className="editorial-block" style={{ marginBottom: '120px', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '40px' }}>
+                
+                {/* The Video Poster */}
+                <div style={{ flex: '1 1 400px', minWidth: '300px', maxWidth: '600px' }}>
+                  <FadeInSection>
+                    <div 
+                      className="video-poster" 
+                      style={{ position: 'relative', width: '100%', aspectRatio: '21/9', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.6)' }}
+                      onClick={() => setPlayingVideo(topVideos[idx === 1 ? 0 : 1].src)}
+                    >
+                      <video 
+                        src={topVideos[idx === 1 ? 0 : 1].src} 
+                        muted loop autoPlay playsInline
+                        className="poster-bg-video"
+                      />
+                      <div className="poster-overlay">
+                        <div className="giant-play-btn">
+                          <Play size={40} color="var(--accent-gold)" fill="var(--accent-gold)" />
+                        </div>
+                        <h3 className="video-title">Play Memory</h3>
                       </div>
-                      <h3 className="video-title">Play Memory</h3>
                     </div>
+                  </FadeInSection>
+                </div>
+
+                {/* Spin the Wheel (Only render on idx === 1 to fill space, or other custom element) */}
+                {idx === 1 && (
+                  <div style={{ flex: '1 1 400px', minWidth: '300px', maxWidth: '500px', display: 'flex', justifyContent: 'center' }}>
+                    <FadeInSection>
+                      <SpinTheWheel onGoToMasti={onGoToMasti} />
+                    </FadeInSection>
                   </div>
-                </FadeInSection>
+                )}
+
               </div>
             )}
           </React.Fragment>
@@ -91,15 +110,16 @@ const ScatteredStory = ({ photos, videos }) => {
 
       {/* Video Modal */}
       {playingVideo && (
-        <div className="modal-overlay" onClick={() => setPlayingVideo(null)} style={{zIndex: 99999}}>
-          <video 
-            src={playingVideo} 
-            autoPlay muted loop playsInline
-            style={{
-              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-              objectFit: 'cover', filter: 'blur(30px) brightness(0.6)', transform: 'scale(1.2)', zIndex: 0
-            }} 
-          />
+        <div className="modal-overlay" onClick={() => setPlayingVideo(null)} style={{
+          zIndex: 99999, 
+          background: 'rgba(26,11,22,0.85)',
+          backgroundImage: 'url(/juhi_media/birthday_theme_bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundBlendMode: 'overlay',
+          backdropFilter: 'blur(10px)'
+        }}>
+
           <button className="modal-close" onClick={() => setPlayingVideo(null)} style={{ zIndex: 2 }}>×</button>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ zIndex: 1, background: 'transparent' }}>
             <video 

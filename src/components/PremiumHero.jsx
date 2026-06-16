@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Play, LogOut } from 'lucide-react';
+import AudioButton from './AudioButton';
 
 const PremiumHero = ({ bgImage, onLogout }) => {
   const [showVideo, setShowVideo] = useState(false);
@@ -9,19 +10,15 @@ const PremiumHero = ({ bgImage, onLogout }) => {
       {bgImage && <img src={bgImage} alt="Background" className="hero-bg" />}
       <div className="hero-overlay" style={{ background: 'linear-gradient(to bottom, rgba(26,11,22,0.1) 0%, rgba(26,11,22,0.85) 100%)' }}></div>
       
-      {onLogout && (
-        <button 
-          onClick={onLogout}
-          style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 100, display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.5)', border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-main)' }}
-        >
-          <LogOut size={16} /> Logout
-        </button>
-      )}
+      {/* Logout button moved to Navbar */}
 
       <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative', background: 'rgba(26,11,22,0.6)', padding: '50px 80px', borderRadius: '20px', border: '2px solid var(--accent-gold)', backdropFilter: 'blur(10px)', boxShadow: '0 0 50px rgba(255, 105, 180, 0.3)' }}>
         <div style={{ fontSize: '5rem', marginBottom: '10px' }}>🎂🎈🎁</div>
-        <h1 className="hero-title" style={{ color: 'var(--accent-gold)', fontSize: '5.5rem', fontWeight: 'bold' }}>Happy Birthday Juhi!</h1>
-        <div className="hero-date" style={{ fontSize: '1.5rem', color: '#fff' }}>The Most Special Day of the Year 💖</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
+          <h1 className="hero-title" style={{ color: 'var(--accent-gold)', fontSize: '5.5rem', fontWeight: 'bold', margin: 0 }}>Happy Birthday Juhi!</h1>
+          <AudioButton text="Happy Birthday Juhi! The Most Special Day of the Year." size={32} />
+        </div>
+        <div className="hero-date" style={{ fontSize: '1.5rem', color: '#fff', marginTop: '10px' }}>The Most Special Day of the Year 💖</div>
         <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
            <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(255, 105, 180, 0.2)', animation: 'slowPulse 2s infinite' }}>
              <Play fill="var(--accent-gold)" color="var(--accent-gold)" />
