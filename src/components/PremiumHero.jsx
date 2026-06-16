@@ -5,9 +5,9 @@ const PremiumHero = ({ bgImage, onLogout }) => {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <div className="hero-section">
+    <div className="hero-section" style={{ background: 'transparent' }}>
       {bgImage && <img src={bgImage} alt="Background" className="hero-bg" />}
-      <div className="hero-overlay"></div>
+      <div className="hero-overlay" style={{ background: 'linear-gradient(to bottom, rgba(26,11,22,0.1) 0%, rgba(26,11,22,0.85) 100%)' }}></div>
       
       {onLogout && (
         <button 
@@ -18,24 +18,32 @@ const PremiumHero = ({ bgImage, onLogout }) => {
         </button>
       )}
 
-      <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative' }}>
-        <div className="hero-pretitle">A Celebration of Life</div>
-        <h1 className="hero-title">Happy Birthday, Juhi</h1>
-        <div className="hero-date">Unveiling The Memories</div>
+      <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative', background: 'rgba(26,11,22,0.6)', padding: '50px 80px', borderRadius: '20px', border: '2px solid var(--accent-gold)', backdropFilter: 'blur(10px)', boxShadow: '0 0 50px rgba(255, 105, 180, 0.3)' }}>
+        <div style={{ fontSize: '5rem', marginBottom: '10px' }}>🎂🎈🎁</div>
+        <h1 className="hero-title" style={{ color: 'var(--accent-gold)', fontSize: '5.5rem', fontWeight: 'bold' }}>Happy Birthday Juhi!</h1>
+        <div className="hero-date" style={{ fontSize: '1.5rem', color: '#fff' }}>The Most Special Day of the Year 💖</div>
         <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
-           <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(212, 175, 55, 0.2)', animation: 'slowPulse 2s infinite' }}>
+           <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(255, 105, 180, 0.2)', animation: 'slowPulse 2s infinite' }}>
              <Play fill="var(--accent-gold)" color="var(--accent-gold)" />
            </div>
         </div>
       </div>
 
       {showVideo && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <video 
+            src="/juhi_media/VID_20260226_113337_522.mp4" 
+            autoPlay muted loop playsInline
+            style={{
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+              objectFit: 'cover', filter: 'blur(30px) brightness(0.6)', transform: 'scale(1.2)', zIndex: 0
+            }} 
+          />
           <video 
             src="/juhi_media/VID_20260226_113337_522.mp4" 
             autoPlay 
             controls
-            style={{ width: '100%', maxHeight: '100vh', objectFit: 'contain' }}
+            style={{ width: '100%', maxHeight: '100vh', objectFit: 'contain', position: 'relative', zIndex: 1 }}
             onEnded={() => setShowVideo(false)}
           />
           <button 

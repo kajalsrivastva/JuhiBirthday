@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactPlayer from 'react-player';
 import { Volume2, VolumeX, SkipBack, SkipForward } from 'lucide-react';
 import PasswordScreen from './components/PasswordScreen';
 import PremiumHero from './components/PremiumHero';
@@ -7,16 +8,21 @@ import ScatteredStory from './components/ScatteredStory';
 import InteractiveVideoShowcase from './components/InteractiveVideoShowcase';
 import SurpriseBox from './components/SurpriseBox';
 import MagazineSpread from './components/MagazineSpread';
-import SecretMessage from './components/SecretMessage';
+import StoryTimeline from './components/StoryTimeline';
 import TheVault from './components/TheVault';
+import InteractiveGallery from './components/InteractiveGallery';
+import SecretMessage from './components/SecretMessage';
+import MemoryPuzzle from './components/MemoryPuzzle';
 import ScratchCardSection from './components/ScratchCardSection';
+import ParticleBackground from './components/ParticleBackground';
+import ScrollToTop from './components/ScrollToTop';
 import './index.css';
 import mediaData from './mediaList.json';
 import playlistData from './playlist.json';
 
 function App() {
   const [stage, setStage] = useState('password'); 
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
@@ -98,32 +104,39 @@ function App() {
         console.log("Autoplay blocked:", e);
         setIsMusicPlaying(false);
       });
+    } else if (audioRef.current && !isMusicPlaying) {
+      audioRef.current.pause();
     }
   }, [stage, isMusicPlaying, currentSongIndex]);
 
   return (
     <div className="app-container">
-      {stage === 'website' && shuffledPlaylist.length > 0 && (
+      {(stage === 'website' || stage === 'masti') && shuffledPlaylist.length > 0 && (
         <audio 
           ref={audioRef}
           src={shuffledPlaylist[currentSongIndex]}
-          autoPlay
+          autoPlay={isMusicPlaying}
           onEnded={() => {
             setCurrentSongIndex((prev) => (prev + 1) % shuffledPlaylist.length);
           }}
           onError={() => {
-            // Skip to next song if current song fails to load
             setCurrentSongIndex((prev) => (prev + 1) % shuffledPlaylist.length);
           }}
         />
       )}
 
       {stage === 'password' && (
-        <PasswordScreen onUnlock={handleUnlock} bgImage="/juhi_media/file_0000000091f47209bcb30ef304b5d292.png" />
+        <PasswordScreen onUnlock={handleUnlock} bgImage="/juhi_media/password_bg.png" avatarImage="/juhi_media/file_0000000091f47209bcb30ef304b5d292.png" />
       )}
 
       {stage === 'welcomeVideo' && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ 
+          position: 'fixed', inset: 0, 
+          backgroundImage: 'linear-gradient(to bottom, rgba(26, 11, 22, 0.8), rgba(26, 11, 22, 0.95)), url(/juhi_media/birthday_theme_bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' 
+        }}>
           <video 
             src="/juhi_media/InShot_20260612_003622182.mp4" 
             autoPlay 
@@ -142,11 +155,18 @@ function App() {
 
       {stage === 'website' && (
         <>
-          {/* Persistent Music Controller */}
+          <ParticleBackground />
+          <ScrollToTop />
+          <div className="journey-line"></div>
+        </>
+      )}
+
+      {/* Persistent Music Controller */}
+      {(stage === 'website' || stage === 'masti') && (
           <div style={{
             position: 'fixed', bottom: '30px', right: '30px', zIndex: 9998,
             background: 'rgba(20, 20, 20, 0.8)', padding: '12px 24px', borderRadius: '30px',
-            backdropFilter: 'blur(10px)', border: '1px solid rgba(212, 175, 55, 0.4)',
+            backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 105, 180, 0.4)',
             display: 'flex', alignItems: 'center', gap: '20px',
             boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
           }}>
@@ -175,7 +195,10 @@ function App() {
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             />
           </div>
+      )}
 
+      {stage === 'website' && (
+        <>
           <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} />
           
           <TextMessageSection 
@@ -196,6 +219,11 @@ function App() {
             imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
           />
 
+          <MemoryPuzzle 
+            photos={photos} 
+            videos={videos}
+          />
+
           <TextMessageSection 
             title="The Journey"
             message="Aaj sochti hoon to lagta hai ki anjaan se shuru hua safar itna khoobsurat hoga, kabhi socha hi nahi tha. Aaj hum do alag log nahi, balki ek dusre ki khushi, takleef aur yaadon ka hissa ban chuke hain. Hamari har ladai ke baad wali sulah aur har muskurahat ne is dosti ko aur bhi khaas bana diya. ❤️"
@@ -208,7 +236,6 @@ function App() {
             bgImage={photos.length > 0 ? photos[photos.length - 5]?.src : null}
           />
 
-          <InteractiveVideoShowcase videos={videos.slice(2)} />
 
           <TextMessageSection 
             title="A True Blessing"
@@ -245,6 +272,25 @@ function App() {
             message="Meri zindagi mein tum wahi tohfa ho. Khoon ka rishta na hote hue bhi tumne har khushi aur har mushkil mein apna saath diya. Shayad isi liye kehte hain ki kuch rishte janam se nahi, dil se bante hain. 🫶"
           />
 
+          <div style={{ padding: '50px 20px', display: 'flex', justifyContent: 'center' }}>
+            <button 
+              onClick={() => {
+                setStage('masti');
+                window.scrollTo(0, 0);
+              }}
+              style={{
+                background: 'linear-gradient(45deg, var(--accent-gold), var(--accent-rose))',
+                color: '#fff', border: 'none', padding: '20px 40px', fontSize: '1.5rem',
+                borderRadius: '50px', cursor: 'pointer', fontWeight: 'bold',
+                boxShadow: '0 15px 30px rgba(255,105,180,0.4)', transition: 'transform 0.3s'
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              🔓 Play Treasure Hunt Game
+            </button>
+          </div>
+
           <SecretMessage 
             hiddenVideoSrc={hiddenVideo} 
             bgImage={photos.length > 0 ? photos[photos.length - 4]?.src : null}
@@ -254,6 +300,16 @@ function App() {
             <div className="footer-text">Made with ❤️ for Juhi</div>
           </footer>
         </>
+      )}
+
+      {stage === 'masti' && (
+        <InteractiveVideoShowcase 
+          videos={videos.slice(2)} 
+          onBack={() => {
+            setStage('website');
+            window.scrollTo(0, 0);
+          }} 
+        />
       )}
     </div>
   );

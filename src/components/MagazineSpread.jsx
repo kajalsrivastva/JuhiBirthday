@@ -79,12 +79,12 @@ const MagazineSpread = ({ photos, calendarVideoSrc, featuredPhoto }) => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'cover',
+                            objectFit: 'contain',
                             objectPosition: 'center top' // Prevent face cutoff
                           }} 
                         />
                         <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(255, 105, 180, 0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Play size={16} fill="#fff" color="#fff" />
                           </div>
                         </div>
@@ -139,7 +139,7 @@ const MagazineSpread = ({ photos, calendarVideoSrc, featuredPhoto }) => {
                     borderRadius: '2px', 
                     width: '100%', 
                     aspectRatio: '4/5', 
-                    objectFit: 'cover' 
+                    objectFit: 'contain' 
                   }} />
                   <div className="spread-photo-caption" style={{
                     marginTop: '15px',

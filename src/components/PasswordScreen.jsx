@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const PasswordScreen = ({ onUnlock, bgImage }) => {
+const PasswordScreen = ({ onUnlock, bgImage, avatarImage }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,16 +30,21 @@ const PasswordScreen = ({ onUnlock, bgImage }) => {
 
   return (
     <div className={`password-container ${unlocked ? 'fade-out-late' : ''}`} style={{
-      backgroundImage: bgImage ? `url(${bgImage})` : 'none',
-      backgroundSize: 'contain',
+      backgroundImage: bgImage ? `linear-gradient(to bottom, rgba(26, 11, 22, 0.7), rgba(26, 11, 22, 0.85)), url(${bgImage})` : 'none',
+      backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center top',
+      backgroundPosition: 'center',
       backgroundColor: '#0a0a0c'
     }}>
       <div className="password-card" style={{ 
         zIndex: 1, position: 'relative', width: '90%', maxWidth: '400px',
         background: 'transparent', backdropFilter: 'none', border: 'none', boxShadow: 'none'
       }}>
+        {avatarImage && (
+          <div style={{ width: '200px', height: '200px', borderRadius: '50%', margin: '0 auto 30px', border: '4px solid var(--accent-gold)', overflow: 'hidden', boxShadow: '0 0 30px rgba(255,105,180,0.6)' }}>
+            <img src={avatarImage} alt="Juhi" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }} />
+          </div>
+        )}
         <h2 className="password-title" style={{ fontSize: '2.2rem', textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>Juhi's Birthday Surprise 🎂</h2>
         <p className="password-subtitle" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.9)', color: '#eee' }}>Enter the secret key to unlock our beautiful memories</p>
         

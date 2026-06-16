@@ -89,13 +89,21 @@ const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) =
 
       {showVideo && videoSrc && (
         <div className="modal-overlay" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 100000 }}>
-          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }}>×</button>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
+          <video 
+            src={videoSrc} 
+            autoPlay muted loop playsInline
+            style={{
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+              objectFit: 'cover', filter: 'blur(30px) brightness(0.6)', transform: 'scale(1.2)', zIndex: 0
+            }} 
+          />
+          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 2 }}>×</button>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ zIndex: 1 }}>
             <video 
               src={videoSrc} 
               controls 
               autoPlay 
-              style={{ width: '100%', maxHeight: '85vh', display: 'block' }} 
+              style={{ width: '100%', maxHeight: '85vh', display: 'block', position: 'relative' }} 
             />
           </div>
         </div>
