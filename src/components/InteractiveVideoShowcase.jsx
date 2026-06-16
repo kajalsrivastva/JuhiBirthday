@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import FadeInSection from './FadeInSection';
 import { Play, Lock, Unlock, ArrowLeft } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import AudioButton from './AudioButton';
 
 const InteractiveVideoShowcase = ({ videos, onBack }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +75,7 @@ const InteractiveVideoShowcase = ({ videos, onBack }) => {
 
     const autoScroll = () => {
       if (scrollRef.current && !isHovered) {
-        scrollRef.current.scrollLeft += 2;
+        scrollRef.current.scrollLeft += 4;
         if (scrollRef.current.scrollLeft + scrollRef.current.clientWidth >= scrollRef.current.scrollWidth - 1) {
           scrollRef.current.scrollLeft = 0;
         }
@@ -120,11 +121,16 @@ const InteractiveVideoShowcase = ({ videos, onBack }) => {
         <div className="section-header" style={{ marginBottom: '40px' }}>
           <h2 className="section-title">Masti Unplugged 🎬</h2>
           <div className="text-divider"></div>
-          <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6' }}>
+          <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '20px' }}>
             {isUnlocked 
               ? "Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!" 
               : "Is treasure vault tak pahunchne ke liye tumhe mere kuch sawaalon ke jawab dene honge! Sahi jawab do aur aakhiri tohfa unlock karo!"}
           </p>
+          {isUnlocked && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              <AudioButton text="Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!" size={20} />
+            </div>
+          )}
         </div>
 
         {/* Main Player Container */}
@@ -227,7 +233,8 @@ const InteractiveVideoShowcase = ({ videos, onBack }) => {
           style={{ 
             msOverflowStyle: 'none', 
             scrollbarWidth: 'none', 
-            overflowX: 'auto' 
+            overflowX: 'auto',
+            scrollBehavior: 'auto'
           }}
         >
           <style>{`.playlist-container::-webkit-scrollbar { display: none; }`}</style>

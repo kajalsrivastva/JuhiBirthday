@@ -35,7 +35,7 @@ const TheVault = ({ allPhotos, bgImage }) => {
 
     const autoScroll = () => {
       if (scrollRef.current && opened && !selectedMedia && !isHovered) {
-        scrollRef.current.scrollLeft += 2.5; // adjust speed here (thoda fast)
+        scrollRef.current.scrollLeft += 4; // adjusted speed
         // Reset to left if reached end
         if (scrollRef.current.scrollLeft + scrollRef.current.clientWidth >= scrollRef.current.scrollWidth - 1) {
           scrollRef.current.scrollLeft = 0;
@@ -128,7 +128,7 @@ const TheVault = ({ allPhotos, bgImage }) => {
                 <p style={{ color: '#fff', fontSize: '1.2rem', marginTop: '10px' }}>Our craziest, happiest, and most beautiful memories!</p>
               </div>
             
-              <div className="magazine-grid" ref={scrollRef}>
+              <div className="magazine-grid" ref={scrollRef} style={{ scrollBehavior: 'auto' }}>
                 {allPhotos.map((photo, index) => {
                   // Interleave quotes every 6 photos
                   const showQuote = index % 6 === 0 && index !== 0;
