@@ -253,7 +253,7 @@ function App() {
           />
 
           <SurpriseBox 
-            title="Another Sweet Memory"
+            title="Sweet Memory"
             message="Ek aur chhota sa surprise tumhare liye, kyunki tumhari har muskurahat mere liye bahut khaas hai. Tap to open!"
             videoSrc="/juhi_media/VID_20251021_085311_041.mp4" 
             bgImage={photos.length > 0 ? photos[photos.length - 5]?.src : null}
