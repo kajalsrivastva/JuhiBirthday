@@ -25,12 +25,10 @@ const MemoryPuzzle = ({ photos, videos }) => {
       
     setCards(shuffledCards);
 
-    // Pick video: first time use specific video, then random
-    if (playCount === 0) {
-      setCurrentVideoSrc('/juhi_media/VID_20260225_205339_824.mp4');
-    } else if (videos && videos.length > 0) {
-      const randomVid = videos[Math.floor(Math.random() * videos.length)].src;
-      setCurrentVideoSrc(randomVid);
+    // Pick a random video every time
+    if (videos && videos.length > 0) {
+      const randomVideo = videos[Math.floor(Math.random() * videos.length)].src;
+      setCurrentVideoSrc(randomVideo);
     }
   }, [photos, playCount, videos]);
 
