@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Play, LogOut, X } from 'lucide-react';
 import AudioButton from './AudioButton';
 
-const PremiumHero = ({ bgImage, onLogout }) => {
+const PremiumHero = ({ bgImage, onLogout, subtitle }) => {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
@@ -12,12 +12,13 @@ const PremiumHero = ({ bgImage, onLogout }) => {
       
       {/* Logout button moved to Navbar */}
 
-      <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative', background: 'rgba(26,11,22,0.6)', padding: '50px 80px', borderRadius: '20px', border: '2px solid var(--accent-gold)', backdropFilter: 'blur(10px)', boxShadow: '0 0 50px rgba(255, 105, 180, 0.3)' }}>
+      <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative', background: 'rgba(26,11,22,0.6)', padding: 'clamp(20px, 5vw, 50px) clamp(20px, 8vw, 80px)', borderRadius: '20px', border: '2px solid var(--accent-gold)', backdropFilter: 'blur(10px)', boxShadow: '0 0 50px rgba(255, 105, 180, 0.3)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
           <h1 className="hero-title" style={{ color: 'var(--accent-gold)', fontSize: '5.5rem', fontWeight: 'bold', margin: 0 }}>Happy Birthday Juhi!</h1>
           <AudioButton text="Happy Birthday Juhi! The Most Special Day of the Year." size={32} />
         </div>
         <div className="hero-date" style={{ fontSize: '1.5rem', color: '#fff', marginTop: '10px' }}>The Most Special Day of the Year 💖</div>
+        {subtitle && <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginTop: '15px', maxWidth: '600px', textAlign: 'center', lineHeight: '1.5' }}>{subtitle}</div>}
         <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
            <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(255, 105, 180, 0.2)', animation: 'slowPulse 2s infinite' }}>
              <Play fill="var(--accent-gold)" color="var(--accent-gold)" />

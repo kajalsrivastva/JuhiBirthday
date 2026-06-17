@@ -17,9 +17,11 @@ import ScratchCardSection from './components/ScratchCardSection';
 import ParticleBackground from './components/ParticleBackground';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
+import SpinTheWheel from './components/SpinTheWheel';
 import './index.css';
 import mediaData from './mediaList.json';
 import playlistData from './playlist.json';
+import { heroQuotes, beginningQuotes, journeyQuotes, scratchCardQuotes, scrapbookQuotes, mastiQuotes } from './data/quotes';
 
 function App() {
   const [stage, setStage] = useState('password'); 
@@ -38,6 +40,28 @@ function App() {
   const [videos, setVideos] = useState([]);
   const [hiddenVideo, setHiddenVideo] = useState(null);
   const [heroBg, setHeroBg] = useState(null);
+  
+  const [dynamicTexts, setDynamicTexts] = useState({
+    hero: '',
+    beginning: '',
+    journey: '',
+    scratchCard: '',
+    scrapbook: '',
+    masti: ''
+  });
+
+  useEffect(() => {
+    if (stage === 'website') {
+      setDynamicTexts({
+        hero: heroQuotes[Math.floor(Math.random() * heroQuotes.length)],
+        beginning: beginningQuotes[Math.floor(Math.random() * beginningQuotes.length)],
+        journey: journeyQuotes[Math.floor(Math.random() * journeyQuotes.length)],
+        scratchCard: scratchCardQuotes[Math.floor(Math.random() * scratchCardQuotes.length)],
+        scrapbook: scrapbookQuotes[Math.floor(Math.random() * scrapbookQuotes.length)],
+        masti: mastiQuotes[Math.floor(Math.random() * mastiQuotes.length)],
+      });
+    }
+  }, [stage]);
 
   useEffect(() => {
     // Separate media
@@ -207,13 +231,13 @@ function App() {
           />
 
           <div id="section-home">
-            <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} />
+            <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} subtitle={dynamicTexts.hero} />
           </div>
           
           <div id="section-beginning">
             <TextMessageSection 
               title="The Beginning"
-              message="Ek waqt tha jab hum dono ek dusre ke liye bilkul anjaan the. Na baat hoti thi, na koi khaas pehchaan. Phir dheere-dheere baatein shuru hui, nok-jhok hui, kabhi behas hui, kabhi hasi-mazaak. Kabhi tum mujhse naraz hui, kabhi main tumse. Lekin shayad wahi chhoti-chhoti nok-jhok hamari dosti ko aur gehra banati gayi."
+              message={dynamicTexts.beginning}
             />
           </div>
 
@@ -233,11 +257,13 @@ function App() {
             />
           </div>
 
-          <ScratchCardSection 
-            title="Scratch Your Surprise!" 
-            subtext="Kuch yaadein chhipi hui hoti hain. Scratch karein aur dekhein kya surprise hai!" 
-            imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
-          />
+          <div id="section-scratch">
+            <ScratchCardSection 
+              title="Scratch Your Surprise!" 
+              subtext={dynamicTexts.scratchCard} 
+              imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
+            />
+          </div>
 
           <div id="section-puzzle">
             <MemoryPuzzle 
@@ -246,9 +272,16 @@ function App() {
             />
           </div>
 
+          <div id="section-wheel" style={{ padding: '80px 20px', display: 'flex', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+            <SpinTheWheel onGoToMasti={() => {
+              setStage('masti');
+              window.scrollTo(0, 0);
+            }} />
+          </div>
+
           <TextMessageSection 
             title="The Journey"
-            message="Aaj sochti hoon to lagta hai ki anjaan se shuru hua safar itna khoobsurat hoga, kabhi socha hi nahi tha. Aaj hum do alag log nahi, balki ek dusre ki khushi, takleef aur yaadon ka hissa ban chuke hain. Hamari har ladai ke baad wali sulah aur har muskurahat ne is dosti ko aur bhi khaas bana diya. ❤️"
+            message={dynamicTexts.journey}
           />
 
           <SurpriseBox 
@@ -287,11 +320,13 @@ function App() {
             />
           </div>
 
-          <ScratchCardSection 
-            title="One More Surprise!" 
-            subtext="Ek aur khoobsurat pal, sirf tumhare liye." 
-            imageSrc="/juhi_media/WhatsApp Image 2026-06-15 at 5.07.01 AM.jpeg" 
-          />
+          <div id="section-scratch-2">
+            <ScratchCardSection 
+              title="One More Surprise!" 
+              subtext="Ek aur khoobsurat pal, sirf tumhare liye." 
+              imageSrc="/juhi_media/WhatsApp Image 2026-06-15 at 5.07.01 AM.jpeg" 
+            />
+          </div>
 
           <TextMessageSection 
             title="Forever Besties"
@@ -330,11 +365,9 @@ function App() {
 
       {stage === 'masti' && (
         <InteractiveVideoShowcase 
-          videos={videos.slice(2)} 
-          onBack={() => {
-            setStage('website');
-            window.scrollTo(0, 0);
-          }} 
+          videos={videos} 
+          onClose={() => setStage('website')} 
+          message={dynamicTexts.masti}
         />
       )}
     </div>

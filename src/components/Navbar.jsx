@@ -17,6 +17,9 @@ const Navbar = ({ onGoToMasti, onLogout }) => {
   const navLinks = [
     { label: 'Home', target: 'section-home' },
     { label: 'Our Journey', target: 'section-journey' },
+    { label: 'First Scratch Card', target: 'section-scratch' },
+    { label: 'Second Scratch Card', target: 'section-scratch-2' },
+    { label: 'Spin The Wheel', target: 'section-wheel' },
     { label: 'Memory Puzzle', target: 'section-puzzle' },
     { label: 'BFF Magazine', target: 'section-magazine' },
     { label: 'Secret Vault', target: 'section-vault' },
