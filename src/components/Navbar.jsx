@@ -56,11 +56,12 @@ const Navbar = ({ onGoToMasti, onLogout }) => {
           onClick={() => handleNavClick('section-home')}
           style={{ 
             color: 'var(--accent-gold)', 
-            fontSize: '1.5rem', 
+            fontSize: 'clamp(1.1rem, 4vw, 1.5rem)', 
             fontWeight: 'bold', 
-            fontFamily: "'Playfair Display', serif",
             cursor: 'pointer',
-            textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+            letterSpacing: '1px',
+            fontFamily: 'var(--font-heading)',
+            lineHeight: '1.2'
           }}
         >
           Juhi Birthday Surprise 2026<span style={{ color: 'var(--accent-rose)' }}></span>
@@ -166,13 +167,13 @@ const Navbar = ({ onGoToMasti, onLogout }) => {
                     background: 'none',
                     border: 'none',
                     color: isHovered ? 'var(--accent-gold)' : 'var(--text-primary)',
-                    fontSize: '2.5rem',
+                    fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
                     fontFamily: 'var(--font-heading)',
                     fontWeight: isHovered ? '600' : '400',
                     cursor: 'pointer',
                     transition: 'all 0.4s ease',
                     textTransform: 'uppercase',
-                    letterSpacing: '4px',
+                    letterSpacing: 'clamp(1px, 1vw, 4px)',
                     textShadow: isHovered ? '0 0 20px rgba(255, 105, 180, 0.4)' : 'none',
                     transform: isHovered ? 'scale(1.05)' : 'scale(1)'
                   }}

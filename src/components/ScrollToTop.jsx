@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
 
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.pageYOffset > 500) {
-        setIsVisible(true);
+        setIsAtTop(false);
       } else {
-        setIsVisible(false);
+        setIsAtTop(true);
       }
     };
 
@@ -17,18 +17,23 @@ const ScrollToTop = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  const handleScroll = () => {
+    if (isAtTop) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   };
-
-  if (!isVisible) return null;
 
   return (
     <div 
-      onClick={scrollToTop}
+      onClick={handleScroll}
       style={{
         position: 'fixed',
         bottom: '100px',
@@ -57,7 +62,11 @@ const ScrollToTop = () => {
         e.currentTarget.style.backgroundColor = 'rgba(255, 105, 180, 0.2)';
       }}
     >
-      <ArrowUp color="var(--accent-gold)" size={24} />
+      {isAtTop ? (
+        <ArrowDown color="var(--accent-gold)" size={24} />
+      ) : (
+        <ArrowUp color="var(--accent-gold)" size={24} />
+      )}
     </div>
   );
 };

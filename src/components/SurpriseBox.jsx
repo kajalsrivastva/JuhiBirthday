@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
-import { Gift, Heart, Star } from 'lucide-react';
+import { Gift, Heart, Star, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import AudioButton from './AudioButton';
 
@@ -57,9 +57,12 @@ const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) =
     }}>
       {bgImage && (
         <>
-          <div style={{ position: 'absolute', inset: '-20px', backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px)', opacity: 0.5, zIndex: 0 }}></div>
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${bgImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', zIndex: 1 }}></div>
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,12,0.6)', zIndex: 2 }}></div>
+          {/* Birthday theme background instead of dark blur */}
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/juhi_media/new_birthday_theme_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.9, zIndex: 0 }}></div>
+          {/* Keep the photo in the center */}
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${bgImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', zIndex: 1, filter: 'drop-shadow(0 0 30px rgba(0,0,0,0.5))' }}></div>
+          {/* Semi-transparent dark overlay so the text is still readable */}
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(26,11,22,0.6)', zIndex: 2 }}></div>
         </>
       )}
       
@@ -101,7 +104,9 @@ const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) =
               objectFit: 'cover', filter: 'blur(30px) brightness(0.6)', transform: 'scale(1.2)', zIndex: 0
             }} 
           />
-          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 2 }}>×</button>
+          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 100002 }}>
+            <X size={24} />
+          </button>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ zIndex: 1 }}>
             <video 
               src={videoSrc} 

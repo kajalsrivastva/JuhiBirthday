@@ -158,7 +158,6 @@ function App() {
         <>
           <ParticleBackground />
           <ScrollToTop />
-          <div className="journey-line"></div>
         </>
       )}
 

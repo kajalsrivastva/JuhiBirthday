@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, LogOut } from 'lucide-react';
+import { Play, LogOut, X } from 'lucide-react';
 import AudioButton from './AudioButton';
 
 const PremiumHero = ({ bgImage, onLogout }) => {
@@ -13,7 +13,6 @@ const PremiumHero = ({ bgImage, onLogout }) => {
       {/* Logout button moved to Navbar */}
 
       <div className="hero-content" onClick={() => setShowVideo(true)} style={{ cursor: 'pointer', position: 'relative', background: 'rgba(26,11,22,0.6)', padding: '50px 80px', borderRadius: '20px', border: '2px solid var(--accent-gold)', backdropFilter: 'blur(10px)', boxShadow: '0 0 50px rgba(255, 105, 180, 0.3)' }}>
-        <div style={{ fontSize: '5rem', marginBottom: '10px' }}>🎂🎈🎁</div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
           <h1 className="hero-title" style={{ color: 'var(--accent-gold)', fontSize: '5.5rem', fontWeight: 'bold', margin: 0 }}>Happy Birthday Juhi!</h1>
           <AudioButton text="Happy Birthday Juhi! The Most Special Day of the Year." size={32} />
@@ -45,9 +44,9 @@ const PremiumHero = ({ bgImage, onLogout }) => {
           />
           <button 
             onClick={(e) => { e.stopPropagation(); setShowVideo(false); }} 
-            style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(0,0,0,0.5)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', zIndex: 10001 }}
+            style={{ position: 'absolute', top: '20px', right: '20px', background: '#ff1493', color: 'white', border: 'none', width: '44px', height: '44px', borderRadius: '50%', cursor: 'pointer', zIndex: 10001, display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.5)' }}
           >
-            Close X
+            <X size={24} />
           </button>
         </div>
       )}
