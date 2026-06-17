@@ -36,6 +36,17 @@ const ScratchCardSection = ({ title, subtext, imageSrc }) => {
         pointerEvents: 'none'
       }}></div>
 
+      {/* Floating Magic Sparkles */}
+      <div className="magic-sparkles-container" style={{ height: '100%', bottom: 0, zIndex: 1 }}>
+        <div className="sparkle sp-1">✨</div>
+        <div className="sparkle sp-2">💖</div>
+        <div className="sparkle sp-3">✨</div>
+        <div className="sparkle sp-4">🎁</div>
+        <div className="sparkle sp-5">✨</div>
+        <div className="sparkle sp-1" style={{ left: '80%', animationDelay: '1s' }}>✨</div>
+        <div className="sparkle sp-3" style={{ left: '20%', animationDelay: '2.5s' }}>💖</div>
+      </div>
+
       <div style={{ position: 'relative', zIndex: 2, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <FadeInSection>
           <div style={{ 

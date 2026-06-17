@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import Tilt from 'react-parallax-tilt';
 
-const TheVault = ({ allPhotos, bgImage }) => {
+const TheVault = ({ allPhotos, bgImage, subtitle }) => {
   const [opened, setOpened] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
   const scrollRef = useRef(null);
@@ -126,7 +126,7 @@ const TheVault = ({ allPhotos, bgImage }) => {
             <div style={{ overflowY: 'auto', height: '100%', width: '100%', paddingBottom: '120px' }}>
               <div className="vault-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', borderBottom: '2px dashed var(--accent-gold)', padding: '60px 20px 20px 20px', marginBottom: '30px', textAlign: 'center', width: '100%' }}>
                 <h2 style={{ fontSize: '3.5rem', color: 'var(--accent-gold)', textShadow: '0 0 20px rgba(255,105,180,0.8)' }}>💕 BFF Scrapbook 💕</h2>
-                <p style={{ color: '#fff', fontSize: '1.2rem', marginTop: '10px' }}>Our craziest, happiest, and most beautiful memories!</p>
+                <p style={{ color: '#fff', fontSize: '1.2rem', marginTop: '10px' }}>{subtitle || "Our craziest, happiest, and most beautiful memories!"}</p>
               </div>
             
               <div className="magazine-grid" ref={scrollRef} style={{ scrollBehavior: 'auto' }}>

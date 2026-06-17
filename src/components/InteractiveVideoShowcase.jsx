@@ -4,7 +4,7 @@ import { Play, Lock, Unlock, ArrowLeft } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import AudioButton from './AudioButton';
 
-const InteractiveVideoShowcase = ({ videos, onBack }) => {
+const InteractiveVideoShowcase = ({ videos, onClose, message }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -103,9 +103,9 @@ const InteractiveVideoShowcase = ({ videos, onBack }) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: 'var(--bg-tertiary)', padding: '20px 0' }}>
-      {onBack && (
+      {onClose && (
         <button 
-          onClick={onBack}
+          onClick={onClose}
           style={{
             position: 'absolute', top: '20px', left: '20px', zIndex: 1000,
             background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#fff',
@@ -123,12 +123,12 @@ const InteractiveVideoShowcase = ({ videos, onBack }) => {
           <div className="text-divider"></div>
           <p className="elegant-subtext" style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '20px' }}>
             {isUnlocked 
-              ? "Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!" 
+              ? (message || "Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!")
               : "Is treasure vault tak pahunchne ke liye tumhe mere kuch sawaalon ke jawab dene honge! Sahi jawab do aur aakhiri tohfa unlock karo!"}
           </p>
           {isUnlocked && (
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-              <AudioButton text="Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!" size={20} />
+              <AudioButton text={message || "Dosti mein jab tak thodi pagalpan aur masti na ho, tab tak maza kahan? Ye videos proof hain ki hum jab bhi saath hote hain, toh masti apne aap shuru ho jati hai. Scroll karo aur dekho hamari sabse funny aur best memories!"} size={20} />
             </div>
           )}
         </div>

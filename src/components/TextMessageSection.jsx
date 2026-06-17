@@ -12,16 +12,19 @@ const TextMessageSection = ({ title, message, subtext }) => {
       <FadeInSection>
         {title && <h2 className="section-title" style={{ fontSize: '2rem', marginBottom: '30px' }}>{title}</h2>}
         <div className="elegant-text" style={{ position: 'relative' }}>
-          <TypeAnimation
-            sequence={[
-              message,
-              1000,
-            ]}
-            wrapper="div"
-            cursor={true}
-            speed={70}
-            style={{ whiteSpace: 'pre-line', lineHeight: '1.8', minHeight: '120px' }}
-          />
+          {message && (
+            <TypeAnimation
+              key={message}
+              sequence={[
+                message,
+                1000,
+              ]}
+              wrapper="div"
+              cursor={true}
+              speed={70}
+              style={{ whiteSpace: 'pre-line', lineHeight: '1.8', minHeight: '120px' }}
+            />
+          )}
         </div>
         <div style={{ textAlign: 'center', marginTop: '15px' }}>
             <AudioButton text={fullText} size={24} />
