@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import Tilt from 'react-parallax-tilt';
 
@@ -115,10 +116,10 @@ const TheVault = ({ allPhotos, bgImage }) => {
           </FadeInSection>
         ) : (
           <>
-            <button className="vault-close" onClick={() => setOpened(false)} style={{ position: 'fixed', top: '90px', left: '20px', background: 'rgba(255, 105, 180, 0.2)', color: '#fff', border: '1px solid var(--accent-rose)', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.5)', zIndex: 999999, display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-rose)'; e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 105, 180, 0.2)'; e.currentTarget.style.transform = 'scale(1)'; }}>
-              <span style={{ fontSize: '1.2rem' }}>✕</span> Close
-            </button>
             <div className="vault-overlay" style={{ background: 'rgba(26,11,22,0.95)', backdropFilter: 'blur(15px)', backgroundImage: 'url(/juhi_media/birthday_theme_bg.png)', backgroundBlendMode: 'overlay', backgroundSize: 'cover', overflow: 'hidden' }}>
+              <button className="modal-close" onClick={() => setOpened(false)} style={{ position: 'fixed', top: '90px', left: '20px', right: 'auto', zIndex: 1000000 }}>
+                <X size={24} />
+              </button>
 
 
             {/* Scrollable Container */}
@@ -195,7 +196,9 @@ const TheVault = ({ allPhotos, bgImage }) => {
       {/* Lightbox */}
       {selectedMedia && (
         <div className="modal-overlay" onClick={() => setSelectedMedia(null)} style={{ zIndex: 100000 }}>
-          <button className="modal-close" onClick={() => setSelectedMedia(null)}>×</button>
+          <button className="modal-close" onClick={() => setSelectedMedia(null)}>
+            <X size={24} />
+          </button>
           <div className="modal-content" style={{ background: 'transparent', boxShadow: 'none' }} onClick={e => e.stopPropagation()}>
             {selectedMedia.type === 'video' ? (
               <video 

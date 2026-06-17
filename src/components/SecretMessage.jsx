@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { X } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import confetti from 'canvas-confetti';
 import AudioButton from './AudioButton';
@@ -91,8 +92,10 @@ const SecretMessage = ({ hiddenVideoSrc, bgImage }) => {
       </div>
 
       {showVideo && hiddenVideoSrc && (
-        <div className="modal-overlay" onClick={() => { setShowVideo(false); setOpened(false); }}>
-          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }}>×</button>
+        <div className="modal-overlay" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 100000 }}>
+          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }}>
+            <X size={24} />
+          </button>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <video 
               src={hiddenVideoSrc} 

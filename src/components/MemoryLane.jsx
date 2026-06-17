@@ -100,10 +100,10 @@ const MemoryLane = () => {
 
       {/* Video Modal */}
       {activeVideo && (
-        <div className="video-modal-overlay" onClick={closeVideo}>
-          <div className="video-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="video-close-btn" onClick={closeVideo}>
-              <X size={24} color="white" />
+        <div className="modal-overlay" onClick={closeVideo} style={{ zIndex: 100000 }}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeVideo}>
+              <X size={24} />
             </button>
             <video 
               src={activeVideo} 

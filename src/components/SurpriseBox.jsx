@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FadeInSection from './FadeInSection';
-import { Gift, Heart, Star } from 'lucide-react';
+import { Gift, Heart, Star, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import AudioButton from './AudioButton';
 
@@ -104,7 +104,9 @@ const SurpriseBox = ({ videoSrc, bgImage, title, message, iconType = 'gift' }) =
               objectFit: 'cover', filter: 'blur(30px) brightness(0.6)', transform: 'scale(1.2)', zIndex: 0
             }} 
           />
-          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 2 }}>×</button>
+          <button className="modal-close" onClick={() => { setShowVideo(false); setOpened(false); }} style={{ zIndex: 100002 }}>
+            <X size={24} />
+          </button>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ zIndex: 1 }}>
             <video 
               src={videoSrc} 
