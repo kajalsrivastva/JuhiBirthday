@@ -25,6 +25,7 @@ import { heroQuotes, beginningQuotes, journeyQuotes, scratchCardQuotes, scrapboo
 
 function App() {
   const [stage, setStage] = useState('password'); 
+  const [activeRoute, setActiveRoute] = useState('section-home');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -228,11 +229,17 @@ function App() {
               window.scrollTo(0, 0);
             }} 
             onLogout={() => { setStage('password'); setIsMusicPlaying(false); }}
+            onNavigate={(route) => {
+              setActiveRoute(route);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           />
 
-          <div id="section-home">
-            <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} subtitle={dynamicTexts.hero} />
-          </div>
+          {activeRoute === 'section-home' && (
+            <>
+              <div id="section-home">
+                <PremiumHero bgImage={heroBg} onLogout={() => { setStage('password'); setIsMusicPlaying(false); }} subtitle={dynamicTexts.hero} />
+              </div>
           
           <div id="section-beginning">
             <TextMessageSection 
@@ -357,9 +364,107 @@ function App() {
             bgImage={photos.length > 0 ? photos[photos.length - 4]?.src : null}
           />
 
-          <footer className="footer">
-            <div className="footer-text">Made with ❤️ for Juhi</div>
-          </footer>
+              <footer className="footer">
+                <div className="footer-text">Made with ❤️ for Juhi</div>
+              </footer>
+            </>
+          )}
+
+          {activeRoute === 'section-journey' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-beginning">
+                <TextMessageSection 
+                  title="The Beginning"
+                  message={dynamicTexts.beginning}
+                />
+              </div>
+
+              <SurpriseBox 
+                videoSrc="/juhi_media/InShot_20260613_004715679.mp4" 
+                bgImage={photos.length > 0 ? photos[photos.length - 2]?.src : null}
+              />
+
+              <div id="section-journey">
+                <ScatteredStory 
+                  photos={photos} 
+                  videos={videos}
+                  onGoToMasti={() => {
+                    setStage('masti');
+                    window.scrollTo(0, 0);
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-scratch' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-scratch">
+                <ScratchCardSection 
+                  title="Scratch Your Surprise!" 
+                  subtext={dynamicTexts.scratchCard} 
+                  imageSrc="/juhi_media/IMG-20260226-WA0136.jpg" 
+                />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-scratch-2' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-scratch-2">
+                <ScratchCardSection 
+                  title="One More Surprise!" 
+                  subtext="Ek aur khoobsurat pal, sirf tumhare liye." 
+                  imageSrc="/juhi_media/WhatsApp Image 2026-06-15 at 5.07.01 AM.jpeg" 
+                />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-wheel' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-wheel" style={{ padding: '80px 20px', display: 'flex', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+                <SpinTheWheel onGoToMasti={() => {
+                  setStage('masti');
+                  window.scrollTo(0, 0);
+                }} />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-puzzle' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-puzzle">
+                <MemoryPuzzle 
+                  photos={photos} 
+                  videos={videos}
+                />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-magazine' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-magazine">
+                <MagazineSpread 
+                  photos={photos} 
+                  calendarVideoSrc="/juhi_media/VID_20260225_205339_824.mp4" 
+                  featuredPhoto="/juhi_media/file_000000004d8c7209b311dd8d13ee4b9e.png"
+                />
+              </div>
+            </div>
+          )}
+
+          {activeRoute === 'section-vault' && (
+            <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+              <div id="section-vault">
+                <TheVault 
+                  allPhotos={photos.slice(5)} 
+                  bgImage={photos.length > 0 ? photos[photos.length - 3]?.src : null}
+                />
+              </div>
+            </div>
+          )}
         </>
       )}
 

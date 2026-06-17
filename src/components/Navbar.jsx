@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, LogOut } from 'lucide-react';
 
-const Navbar = ({ onGoToMasti, onLogout }) => {
+const Navbar = ({ onGoToMasti, onLogout, onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -29,11 +29,13 @@ const Navbar = ({ onGoToMasti, onLogout }) => {
   const handleNavClick = (target) => {
     setIsOpen(false);
     if (target === 'masti') {
-      onGoToMasti();
+      if (onGoToMasti) onGoToMasti();
     } else {
-      const el = document.getElementById(target);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+      if (onNavigate) {
+        onNavigate(target);
+      } else {
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
     }
   };

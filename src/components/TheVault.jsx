@@ -196,7 +196,7 @@ const TheVault = ({ allPhotos, bgImage, subtitle }) => {
       {/* Lightbox */}
       {selectedMedia && (
         <div className="modal-overlay" onClick={() => setSelectedMedia(null)} style={{ zIndex: 100000 }}>
-          <button className="modal-close" onClick={() => setSelectedMedia(null)}>
+          <button className="modal-close" onClick={() => setSelectedMedia(null)} style={{ top: '90px' }}>
             <X size={24} />
           </button>
           <div className="modal-content" style={{ background: 'transparent', boxShadow: 'none' }} onClick={e => e.stopPropagation()}>

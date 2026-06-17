@@ -31,7 +31,7 @@ const InteractiveGallery = ({ photos }) => {
       {/* Lightbox Modal */}
       {selectedImage && (
         <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
-          <button className="modal-close" onClick={() => setSelectedImage(null)}>×</button>
+          <button className="modal-close" onClick={() => setSelectedImage(null)} style={{ top: '90px', zIndex: 1000000 }}>×</button>
           <div className="modal-content" style={{ background: 'transparent', display: 'flex', justifyContent: 'center' }} onClick={e => e.stopPropagation()}>
             <img 
               src={selectedImage.src} 
